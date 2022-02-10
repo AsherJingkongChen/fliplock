@@ -1,8 +1,8 @@
 const scene = new THREE.Scene();
 
-const BoxSize = 10; // #DEFINE BoxSize
-const Rate = 0.1; // #DEFINE Rate of each step in BoxSize (BoxSize/Rate must be INTEGER)
-const SafePrecision = 9; //#DEFINE larger than the length of fixed portion of BoxSize*Rate
+const BoxScale = 8; // #DEFINE BoxScale
+const Rate = 0.1; // #DEFINE Rate of each step in BoxScale (BoxScale/Rate must be INTEGER)
+const SafePrecision = 9; //#DEFINE larger than the length of fixed portion of BoxScale*Rate
 var KEY_INTERRUPT = false;
 
 const camera = new THREE.PerspectiveCamera(60, window.innerWidth/window.innerHeight, 0.01, 500);
@@ -18,37 +18,37 @@ const light = new THREE.PointLight(0xffffff, 1);
 light.position.set(500, 1000, 1500);
 scene.add(light);
 
-const cubeGeometry = new THREE.BoxGeometry(BoxSize, BoxSize, BoxSize);
+const cubeGeometry = new THREE.BoxGeometry(BoxScale, BoxScale, BoxScale);
 const cubeMaterial = new THREE.MeshPhongMaterial({
     color: 0x00fff0
 });
 const cube = new THREE.Mesh(cubeGeometry, cubeMaterial);
-cube.position.set(0, 0, BoxSize*0.5);
+cube.position.set(0, 0, BoxScale*0.5);
 scene.add(cube);
 
-const cubeTargetPoint = new THREE.Vector3(0, 0, BoxSize*0.5);
+const cubeTargetPoint = new THREE.Vector3(0, 0, BoxScale*0.5);
 
 // Displayer initialize
 document.getElementById('cubePos').innerText = 
-`<${cube.position.x}, ${cube.position.y}, ${cube.position.z}>`
+`<${cube.position.x/BoxScale}, ${cube.position.y/BoxScale}, ${cube.position.z/BoxScale}>`
 document.getElementById('targetPos').innerText = 
-`<${cubeTargetPoint.x}, ${cubeTargetPoint.y}, ${cubeTargetPoint.z}>`
+`<${cubeTargetPoint.x/BoxScale}, ${cubeTargetPoint.y/BoxScale}, ${cubeTargetPoint.z/BoxScale}>`
 
 const keyEventQueue = [];
 document.addEventListener('keydown', function(event) {
     console.log(event.key);
     switch (event.key) {
         case "s":
-            cubeTargetPoint.x += BoxSize;
+            cubeTargetPoint.x += BoxScale;
             break;
         case "d":
-            cubeTargetPoint.y += BoxSize;
+            cubeTargetPoint.y += BoxScale;
             break;
         case "w":
-            cubeTargetPoint.x -= BoxSize;
+            cubeTargetPoint.x -= BoxScale;
             break;
         case "a":
-            cubeTargetPoint.y -= BoxSize;
+            cubeTargetPoint.y -= BoxScale;
             break;
         case "Escape":
             KEY_INTERRUPT = !KEY_INTERRUPT;
@@ -74,10 +74,10 @@ function updateMovement(){
 
         // Update position if not reach
         const {x,y} = dist;
-        if(x > 0) cube.position.setX(Number((cube.position.x + BoxSize*Rate).toFixed(SafePrecision)));
-        if(x < 0) cube.position.setX(Number((cube.position.x - BoxSize*Rate).toFixed(SafePrecision)));
-        if(y > 0) cube.position.setY(Number((cube.position.y + BoxSize*Rate).toFixed(SafePrecision)));
-        if(y < 0) cube.position.setY(Number((cube.position.y - BoxSize*Rate).toFixed(SafePrecision)));
+        if(x > 0) cube.position.setX(Number((cube.position.x + BoxScale*Rate).toFixed(SafePrecision)));
+        if(x < 0) cube.position.setX(Number((cube.position.x - BoxScale*Rate).toFixed(SafePrecision)));
+        if(y > 0) cube.position.setY(Number((cube.position.y + BoxScale*Rate).toFixed(SafePrecision)));
+        if(y < 0) cube.position.setY(Number((cube.position.y - BoxScale*Rate).toFixed(SafePrecision)));
 
         if(x > 0) cube.rotateOnWorldAxis(new THREE.Vector3(0, 1, 0), Math.PI * Rate / 2);
         if(x < 0) cube.rotateOnWorldAxis(new THREE.Vector3(0, 1, 0), - Math.PI * Rate / 2);
@@ -86,9 +86,9 @@ function updateMovement(){
 
         // Display position
         document.getElementById('cubePos').innerText = 
-        `<${cube.position.x}, ${cube.position.y}, ${cube.position.z}>`
+        `<${cube.position.x/BoxScale}, ${cube.position.y/BoxScale}, ${cube.position.z/BoxScale}>`
         document.getElementById('targetPos').innerText = 
-        `<${targetPosition.x}, ${targetPosition.y}, ${targetPosition.z}>`
+        `<${targetPosition.x/BoxScale}, ${targetPosition.y/BoxScale}, ${targetPosition.z/BoxScale}>`
     }
 }
 function animation() {
