@@ -1,6 +1,6 @@
 const scene = new THREE.Scene();
 
-const BoxSize = 10; // #DEFINE BoxSize
+const BoxSize = 5; // #DEFINE BoxSize
 const Rate = 1/6; // #DEFINE Rate of each step in BoxSize (BoxSize/Rate must be INTEGER)
 const SafePrecision = 9; //#DEFINE larger than the length of fixed portion of BoxSize*Rate
 var KEY_INTERRUPT = false;
