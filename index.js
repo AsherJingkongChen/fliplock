@@ -105,3 +105,4 @@ function animation() {
 };
 renderer.render(scene, camera);
 window.requestAnimationFrame(animation);
+alert("W A S D = move | ESC = pause")
