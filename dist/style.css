@@ -1,0 +1,19 @@
+body { 
+    margin: 0; 
+}
+.textField {
+    position: absolute;
+    top: 5px;
+    left: 5px;
+}
+.log {
+    position: relative;
+    top: 5px;
+    left: 10px;
+    color: aliceblue;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 24px;
+}
+.logContent {
+    display: inline-block;
+}
