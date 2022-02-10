@@ -4,6 +4,7 @@ const BoxScale = 8; // #DEFINE BoxScale
 const Rate = 0.1; // #DEFINE Rate of each step in BoxScale (BoxScale/Rate must be INTEGER)
 const SafePrecision = 9; //#DEFINE larger than the length of fixed portion of BoxScale*Rate
 var KEY_INTERRUPT = false;
+var KEY_REPEATED = false;
 
 const camera = new THREE.PerspectiveCamera(60, window.innerWidth/window.innerHeight, 0.01, 500);
 camera.position.set(100, 60, 60);
@@ -34,9 +35,10 @@ document.getElementById('cubePos').innerText =
 document.getElementById('targetPos').innerText = 
 `<${cubeTargetPoint.x/BoxScale}, ${cubeTargetPoint.y/BoxScale}, ${cubeTargetPoint.z/BoxScale}>`
 
-const keyEventQueue = [];
+var keyEventQueue = [];
 document.addEventListener('keydown', function(event) {
-    console.log(event.key);
+    console.log(event.key, event.repeat);
+    KEY_REPEATED = event.repeat;
     switch (event.key) {
         case "s":
             cubeTargetPoint.x += BoxScale;
@@ -55,6 +57,14 @@ document.addEventListener('keydown', function(event) {
             break;
     }
     keyEventQueue.push(cubeTargetPoint.clone());
+});
+
+// use keyup to buffer rapid controls
+document.addEventListener('keyup', function(event) {
+    if(keyEventQueue.length > 1){
+        keyEventQueue = [keyEventQueue[0]];
+        cubeTargetPoint.copy(keyEventQueue[0]);
+    }
 });
 
 function updateMovement(){
